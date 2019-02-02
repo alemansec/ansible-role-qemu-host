@@ -1,0 +1,50 @@
+---
+
+#
+# preseed defaults :
+#
+debian_locale_string: "en_US"
+debian_keyboard: "us"
+debian_net_iface: "auto"
+debian_link_wait_timeout: "10"
+debian_dhcp_timeout: "60"
+debian_unset_hostname: "unnamed.local" # set upon provisionning
+debian_unset_domainname: "local" # set upon provisionning
+debian_mirror_hostname: "ftp.fr.debian.org"
+debian_http_proxy: "" # ex: "http://10.42.10.1:3142" for local apt-cacher-ng
+debian_root_pwd: "$6$C.7HMVdV$gpUdlUZjMDZyfnYfVHDVQefTdQXaAVHg.NloDIZqCgHK9VVLHWITvzvaTfeFCsMZGXWZqoXBnaYz87O3/qUlh0" # cleartext or crypt(3) hash
+debian_normal_user_gecos: "ansible management"
+debian_normal_user_login: "confmgmt"
+debian_normal_user_pwd: "$6$9brVU3qq$wdf2W6.0FoFDjDgtDMlrW0FT.mhK7aBwmMA36zlJG9N88TAK9d2MErv8woF7Jhle1w.IvcX6HIiJSE9VtNjqo/" # cleartext or crypt(3) hash
+debian_tz_is_utc_bool: "true"
+debian_tz_str: "Europe/Paris"
+debian_set_ntp_time_on_install_bool: "true"
+# post-install :
+debian_normal_user_extra_group: "infra"
+
+# ssh key to authorize within debian_normal_user_login account:
+confmgmt_authorized_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMvVy8ARmLTZIsNlGsVJtTJp+vVy4G/bp64K4Av+xYtdT11PHW/xY0xlR7Ov4bc5a9T3VWjpRb195YPnTa4oQPvkaQilfYsKpYAj9KWag/zYB5veAvREGHGyJHpRgucfkbTjBDwujvvZtDcxaPpVquR2kWXl6zp2rd3Gby+9+ARuhShDH1+LpXu+6WVPKgGuIrWk96zqpkwvw+Hi5EHkrGjBsHsplst1AcC+wDo6APRtPe3eloKekHtRpWelxoImUSctE5mGITrQfJrnAnUF1+Jbz1OxY4r5NUETzG2CnSnnZEVmGD+3eJtrkOU7CiQihZT+vT+3HlZg7+FVsKdRQ9x3MwWEXF7twWyHLrCnJzUFhJxMmLSiLvIgtdwB1o30T0wwVaZtqZccZ/VdBwHE69cMhK3VGBTzls3h3aH21MfUhNkmkgcVcdIMs3+4qDMnWQyjoivBCu3xeY8EGXZyFtter/ZsS5zCByTNMtCh8X6lfK0Dn7j4nsCi44zGsZMT5XjhRKgMSa7iWPKwbfC9dn16qk6OvjQhU9W+ASqvfnImbhNBqSZqjzWCI3XdFAsQCA2B2/HY2vp8+/lz4Blw0asTUYcnWQ0l4GNmu8xDF3LwMIIIULTrb7V3Zxchh53z7cYiV55zqXYyQSQS44JGHRRShutcFHaySO+5vJKu5+mQ== lonelyone@mercure"
+
+# install ISO files to mirror
+vm_mirrored_iso: [
+  {
+    'u': 'https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.5.0-amd64-netinst.iso',
+    'name': 'debian-9.5.0-amd64-netinst.iso'
+  },
+  {
+    'u': 'https://cdimage.debian.org/debian-cd/current/armhf/iso-cd/debian-9.5.0-armhf-netinst.iso',
+    'name': 'debian-9.5.0-armhf-netinst.iso'
+  }
+]
+
+
+# root directory containing the 'preseed.cfg' file to use when provisionning VM(s) :
+# eg: for x86_64 vm_arch, pressed file is located under '/srv/qemu/preseed/x86_64/preseed.cfg' when
+# qemu_preseed_dir is set to '/srv/qemu/preseed'
+# ('preseed.cfg' filename can't be changed, otherwise it won't be used at all ; see debian preseed docs)
+qemu_preseed_dir: "/srv/qemu/preseed"
+
+# guests will boot using iso files under this directory :
+qemu_boot_iso_dir: "/srv/qemu/iso"
+
+

@@ -1,0 +1,9 @@
+---
+
+- include: "directories.yml"
+
+- include: "install.yml"
+
+- include: "guest_iso_download.yml"
+
+

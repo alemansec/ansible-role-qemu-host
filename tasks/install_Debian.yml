@@ -1,0 +1,91 @@
+---
+
+- name: "enable ip_forward ; VM reachability"
+  sysctl:
+    name: "net.ipv4.ip_forward"
+    value: "1"
+    state: "present"
+    sysctl_set: "yes"
+    sysctl_file: "/etc/sysctl.d/93-ipv4_ip_forward.conf"
+    reload: "yes"
+
+- name: "install qemu, libvirt and virtinst"
+  package:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - "bridge-utils"
+    - "libvirt-daemon"
+    - "libvirt-clients"
+    - "qemu"
+    - "qemu-utils"
+    - "uml-utilities"
+    - "vde2"
+    - "virtinst"
+
+#- name: "create bridge for virtual machines"
+#  linux_bridge: bridge="vmlan0" state="present"
+
+#- name: "add interface to vmlan bridge"
+#  linux_bridge_port: bridge="vmlan0" port="{{ infra_iface  }}.{{ net_infra_vlan_id }}" state="present"
+
+# to be usable (initrd-inject), has to be named 'preseed.cfg'
+- name: "copy debian preseed file"
+  template:
+    src: "preseed/x86_64/debian-preseed.cfg.j2"
+    dest: "{{ qemu_preseed_dir }}/x86_64/preseed.cfg"
+    owner: "root"
+    group: "root"
+
+#- name: "configure TAP interface for qemu vde_switch"
+#  template:
+#    src: "etc/network/interfaces.d/qemutap0.j2"
+#    dest: "/etc/network/interfaces.d/qemutap0"
+#    owner: "root"
+#    group: "root"
+
+#- name: "activate TAP interface"
+#  shell: "modprobe tun ; tunctl -t qemutap0 ; ifup qemutap0"
+
+- name: "configure networking 1 out of 3"
+  template:
+    src: "etc/network/interfaces.j2"
+    dest: "/etc/network/interfaces"
+    owner: "root"
+    group: "root"
+
+- name: "configure networking 2 out of 3"
+  template:
+    src: "etc/network/interfaces.d/infra.j2"
+    dest: "/etc/network/interfaces.d/infra"
+    owner: "root"
+    group: "root"
+
+- name: "configure networking 3 out of 3"
+  template:
+    src: "etc/network/interfaces.d/brinfra0.j2"
+    dest: "/etc/network/interfaces.d/brinfra0"
+    owner: "root"
+    group: "root"
+
+- name: "enable and start libvirtd service"
+  service: name="libvirtd" state="started" enabled="yes"
+
+- name: "create libvirt net: pub_bridge"
+  virt_net:
+    command: define
+    name: "pub_bridge"
+    xml: '{{ lookup("template", "libvirt_net_pub_bridge.xml.j2") }}'
+
+- name: "start pub_bridge net"
+  virt_net:
+    name: "pub_bridge"
+    state: "active"
+
+- name: "start default net"
+  virt_net:
+    name: "default"
+    state: "active"
+
+# TODO reboot if network settings were updated
+

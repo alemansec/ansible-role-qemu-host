@@ -1,0 +1,12 @@
+#
+# {{ ansible_managed }}
+#
+
+# mytap : vde_switch / qemu interface :
+auto qemutap0
+iface qemutap0 inet static
+    address 10.0.3.1
+    netmask 255.255.255.0
+    pre-up /usr/bin/tunctl -t qemutap0
+    post-up vde_switch -d -p /var/run/vde2/vde_switch.pid -t qemutap0
+

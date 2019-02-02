@@ -1,0 +1,20 @@
+---
+
+- include: "install_{{ ansible_os_family }}.yml"
+
+  #- name: "activate libvirt default network"
+  #virt_net:
+  #  name: "default"
+  #  state: "active"
+
+  #- name: "create libvirt net: lan"
+  #virt_net:
+  #  command: define
+  #  name: "infra"
+  #  xml: '{{ lookup("template", "libvirt_net_infra.xml.j2") }}'
+
+  #- name: "start infra net"
+  #virt_net:
+  #  name: "infra"
+  #  state: "active"
+

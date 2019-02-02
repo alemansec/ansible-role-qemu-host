@@ -1,0 +1,15 @@
+---
+
+- name: "directories where to store qemu images and guest install ISO files"
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: 0755
+    owner: "root"
+    group: "root"
+  with_items:
+    - "{{ qemu_boot_iso_dir }}"
+    - "{{ qemu_preseed_dir }}"
+    - "{{ qemu_preseed_dir }}/x86_64"
+    - "{{ qemu_preseed_dir }}/arm32v7"
+

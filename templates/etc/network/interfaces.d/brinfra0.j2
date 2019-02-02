@@ -1,0 +1,14 @@
+#
+# {{ ansible_managed }}
+#
+
+auto brinfra0
+iface brinfra0 inet static
+    address {{ brinfra_ip }}
+    netmask {{ brinfra_mask }}
+    gateway {{ brinfra_gw }}
+    bridge_ports {{ infra_iface }}
+    bridge_stp off
+    bridge_fd 0
+
+

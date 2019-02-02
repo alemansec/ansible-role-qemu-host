@@ -1,0 +1,7 @@
+
+# hosts where we'll install qemu.
+#  'infra_iface' is the interface we'll use to set our infrastructure network on
+# 'brinfra_*' are infra network parameters set on bridge
+[qemu_hosts]
+qemu01.p13.p.s18m2.com ansible_host=192.168.100.4 infra_iface="enp3s0" infra_ip="10.42.100.4" brinfra_ip="192.168.100.4" brinfra_mask="255.255.255.0" brinfra_gw="192.168.100.1"
+

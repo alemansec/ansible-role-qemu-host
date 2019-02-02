@@ -1,0 +1,16 @@
+---
+
+#
+# installs and configures qemu on chosen hosts.
+# also downloads some debian images,
+# and construct debian preseed.cfg files,
+# so we can automatically provision debian virtual machines
+# using ansible.
+#
+
+- name: "book_qemu_host"
+  hosts: "qemu_hosts"
+  max_fail_percentage: 0
+  roles:
+    - { role: "ansible-role-qemu-host" }
+

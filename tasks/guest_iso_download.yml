@@ -1,0 +1,10 @@
+---
+
+- name: "download guest install ISO files"
+  get_url:
+    url: "{{ item.u }}"
+    dest: "{{ qemu_boot_iso_dir }}/{{ item.name }}"
+    mode: 0640
+  with_items:
+    - "{{ vm_mirrored_iso }}"
+
